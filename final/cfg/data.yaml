@@ -15,7 +15,7 @@ val: images/val # val images (relative to 'path') 5000 images
 
 # Classes
 names:
-  0: 0
+  0: background
   1: 1
   2: 2
   3: 3
@@ -30,3 +30,4 @@ names:
   12: 12
   13: 13
   14: 14
+  15: 15

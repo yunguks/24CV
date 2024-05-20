@@ -56,10 +56,10 @@ for fname in os.listdir(test_path):
         
         x = (x_center - w/2)
         y = (y_center - h/2)
-        x = x / 640 * 448
-        y = y / 640 * 448
-        w = w / 640 * 448
-        h = h / 640 * 448
+        # x = x / 640 * 448
+        # y = y / 640 * 448
+        # w = w / 640 * 448
+        # h = h / 640 * 448
         
         box = np.array([x, y, w, h], dtype=np.int64).tolist()
         
@@ -70,14 +70,13 @@ for fname in os.listdir(test_path):
             'score' : float(boxes.conf[i])
         }
         pred.append(result_dict)
-    break
 
-print(pred)
+# print(pred)
 
-# with open("pred.json", "w") as json_file:
-#     json.dump(pred, json_file)
+with open("pred.json", "w") as json_file:
+    json.dump(pred, json_file)
     
-# # Create a ZIP file and add the JSON file to it
-# zip_file = zipfile.ZipFile("predictions.zip", "w")
-# zip_file.write("pred.json")
-# zip_file.close()
+# Create a ZIP file and add the JSON file to it
+zip_file = zipfile.ZipFile("predictions.zip", "w")
+zip_file.write("pred.json")
+zip_file.close()

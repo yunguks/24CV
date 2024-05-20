@@ -12,6 +12,7 @@
 *.zip
 *.json
 *runs
+*datasets
 ### JupyterNotebooks ###
 # gitignore template for Jupyter Notebooks
 # website: http://jupyter.org/

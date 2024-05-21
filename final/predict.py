@@ -11,10 +11,10 @@ import zipfile
 os.environ['WANDB__EXECUTABLE']=sys.executable
 # Load a model
 # model = YOLO("yolov8n.yaml")  # build a new model from scratch
-model = YOLO("runs/detect/test_8n2/weights/best.pt").cuda()  # load a pretrained model (recommended for training)
+model = YOLO("runs/detect/train_8n/weights/best.pt").cuda()  # load a pretrained model (recommended for training)
 
 # # # Use the model
-img_path = 'datasets/yolo_dataset/images/val/6.png'
+img_path = 'datasets/test/6.png'
 # img = Image.open()
 # transform = torchvision.transforms.Compose([
 #     # torchvision.transforms.CenterCrop((640,640)),

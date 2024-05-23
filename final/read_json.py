@@ -10,7 +10,7 @@ imgs = data['images']
 print(len(imgs))
 print(imgs[0])
 
-
+print(f"15.png image data : {imgs[15]}")
 
 print(f"#"*30,"annotation","#"*30)
 anno = data['annotations']
@@ -27,7 +27,7 @@ print(f"area : {anno[0]['area']}")
 
 import os 
 
-print(f" train {len(os.listdir('datasets/yolo_dataset/images/train'))}")
-print(f" unlabeld {len(os.listdir('datasets/yolo_dataset/images/un'))}")
-print(f" val {len(os.listdir('datasets/yolo_dataset/images/val'))}")
+print(f" train {len(os.listdir('datasets/yolo_dataset/images/origin/train'))}")
+print(f" unlabeld {len(os.listdir('datasets/yolo_dataset/images/origin/un'))}")
+print(f" val {len(os.listdir('datasets/yolo_dataset/images/origin/val'))}")
 print(f" test {len(os.listdir('datasets/test'))}")

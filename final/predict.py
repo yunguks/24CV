@@ -11,7 +11,7 @@ import zipfile
 os.environ['WANDB__EXECUTABLE']=sys.executable
 # Load a model
 # model = YOLO("yolov8n.yaml")  # build a new model from scratch
-model = YOLO("runs/detect/train_8n/weights/best.pt").cuda()  # load a pretrained model (recommended for training)
+model = YOLO("runs/detect/train_8n_with_pseudo_with_removed_people/weights/best.pt").cuda()  # load a pretrained model (recommended for training)
 
 # # # Use the model
 img_path = 'datasets/test/6.png'

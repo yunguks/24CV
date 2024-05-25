@@ -31,7 +31,7 @@ img_path = 'datasets/test/6.png'
 # #     result = model(source)
     
 start = time.time()
-result = model(img_path,conf=0.25)  # evaluate model performance on the validation set
+result = model(img_path)  # evaluate model performance on the validation set
 print(result[0].boxes)
 sec = time.time()-start
 
@@ -65,7 +65,7 @@ for fname in os.listdir(test_path):
         
         result_dict= {
             'image_id' : int(fname.replace('.png','')),
-            'category_id' : int(boxes.cls[i]+1),
+            'category_id' : int(boxes.cls[i]),
             'bbox' : box,
             'score' : float(boxes.conf[i])
         }

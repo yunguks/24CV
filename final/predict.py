@@ -11,7 +11,7 @@ import zipfile
 os.environ['WANDB__EXECUTABLE']=sys.executable
 # Load a model
 # model = YOLO("yolov8n.yaml")  # build a new model from scratch
-model = YOLO("best.pt").cuda()  # load a pretrained model (recommended for training)
+model = YOLO("runs/detect/sam_8n_pseudo/weights/best.pt")  # load a pretrained model (recommended for training)
 
 # # # Use the model
 img_path = 'datasets/test/6.png'
@@ -31,7 +31,7 @@ img_path = 'datasets/test/6.png'
 # #     result = model(source)
     
 start = time.time()
-result = model(img_path,conf=0.3)  # evaluate model performance on the validation set
+result = model(img_path,conf=0.25)  # evaluate model performance on the validation set
 print(result[0].boxes)
 sec = time.time()-start
 

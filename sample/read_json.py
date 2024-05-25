@@ -1,5 +1,6 @@
 import json
-
+import sys
+sys.path.append('../')
 
 with open("datasets/train.json", "r") as st_json:
     data = json.load(st_json)

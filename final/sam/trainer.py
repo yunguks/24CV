@@ -12,21 +12,14 @@ import numpy as np
 from sam.optimizer import SAM
 from sam.utils import enable_running_stats, disable_running_stats
 
-import random
-from copy import copy
-from ultralytics.data import build_dataloader, build_yolo_dataset
-from ultralytics.engine.trainer import BaseTrainer
 from ultralytics.models.yolo.detect import DetectionTrainer
-from ultralytics.models import yolo
-from ultralytics.nn.tasks import DetectionModel
-from ultralytics.utils.plotting import plot_images, plot_labels, plot_results
-from ultralytics.utils.torch_utils import de_parallel, torch_distributed_zero_first
 
 
 class SAMDetectionTrainer(DetectionTrainer):
     def __init__(self, cfg=DEFAULT_CFG, overrides=None, _callbacks=None):
         super().__init__(cfg=cfg, overrides=overrides, _callbacks=_callbacks)
-
+        print("Using SAM")
+        
     def build_optimizer(self, model, name="auto", lr=0.001, momentum=0.9, decay=1e-5, iterations=1e5):
         """
         This function is based on 'ultralytics.engine.trainer.BaseTrainer.build_optimizer'.
@@ -82,14 +75,14 @@ class SAMDetectionTrainer(DetectionTrainer):
                 "To request support for addition optimizers please visit https://github.com/ultralytics/ultralytics."
             )
         
-        optimizer.add_param_group({"params": g[0], "weight_decay": decay})  # add g0 with weight_decay
-        optimizer.add_param_group({"params": g[1], "weight_decay": 0.0})  # add g1 (BatchNorm2d weights)
-        
         ###################################### our code ###########################################################
         # use SAM override
         c , a = self.get_optimizer_class(name, momentum, lr)
-        optimizer = SAM(optimizer.param_groups, base_optimizer=c , **a)
+        optimizer = SAM(g[2], base_optimizer=c , **a)
         ###################################### our code ###########################################################
+        
+        optimizer.add_param_group({"params": g[0], "weight_decay": decay})  # add g0 with weight_decay
+        optimizer.add_param_group({"params": g[1], "weight_decay": 0.0})  # add g1 (BatchNorm2d weights)
         
         LOGGER.info(
             f"{colorstr('optimizer:')} {type(optimizer).__name__}(lr={lr}, momentum={momentum}) with parameter groups "
@@ -222,6 +215,9 @@ class SAMDetectionTrainer(DetectionTrainer):
                     self.optimizer.second_step(zero_grad=True)
                     last_opt_step = ni
                     
+                    self.optimizer.zero_grad()
+                    if self.ema:
+                        self.ema.update(self.model)
                 # self.tloss = self.tloss + self.sam_tloss
                 
             ################### our code ##########################################
@@ -242,7 +238,12 @@ class SAMDetectionTrainer(DetectionTrainer):
                 self.run_callbacks("on_train_batch_end")
 
             self.lr = {f"lr/pg{ir}": x["lr"] for ir, x in enumerate(self.optimizer.param_groups)}  # for loggers
+            
             self.run_callbacks("on_train_epoch_end")
+            #####################################################################
+            # torch.save(self.model.state_dict(),'temp.pt')
+            #####################################################################
+            
             if RANK in {-1, 0}:
                 final_epoch = epoch + 1 >= self.epochs
                 self.ema.update_attr(self.model, include=["yaml", "nc", "args", "names", "stride", "class_weights"])

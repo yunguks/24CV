@@ -1,6 +1,6 @@
 # Created by https://www.toptal.com/developers/gitignore/api/python,linux,visualstudiocode,jupyternotebooks
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,linux,visualstudiocode,jupyternotebooks
-
+*test*
 *checkpoint
 *.png
 *.csv
@@ -14,6 +14,8 @@
 *runs
 *datasets
 *.cache
+*.pth
+*.out
 ### JupyterNotebooks ###
 # gitignore template for Jupyter Notebooks
 # website: http://jupyter.org/

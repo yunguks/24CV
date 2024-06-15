@@ -101,7 +101,6 @@ class Trainer(object):
                                                       drop_last=False)
         self.criterion = nn.CrossEntropyLoss()
         
-        
     def train(self):
         self.model.train()
         best_score = 10000
@@ -109,7 +108,7 @@ class Trainer(object):
             losses = 0.
             acces = 0
             with tqdm(self.dataloader, unit="batch") as pbar:
-                for imgs, labels, paths in tqdm(self.dataloader):
+                for imgs, labels, paths in pbar:
                     pbar.set_description(f"Epoch {epoch+1}")
                     
                     imgs = imgs.cuda()
